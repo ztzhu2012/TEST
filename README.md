@@ -38,7 +38,7 @@ DB_PASSWORD=root
 
 ##### (3) 运行安装程序(如不需要演示数据，请删除参数<code> --with-dummy </code>)
 
-<pre><code>php artisan voyager:install --with-dummyg</code></pre>
+<pre><code>php artisan voyager:install --with-dummy</code></pre>
 
 > **email:** admin@admin.com  **password:** password
 
@@ -64,7 +64,58 @@ DB_PASSWORD=root
 
 <pre><code>/public/vendor</code></pre>
 
+如果调整了默认的数据模型位置（例：将默认的模型存放位置为app\改为app\Models\，则还应当修改以下配置：
 
 
+* vendor\tcg\voyager\src\Commands\InstallCommand.php
+
+<pre><code>
+        if (file_exists(app_path('User.php'))) {
+            $str = file_get_contents(app_path('User.php'));
+
+            if ($str !== false) {
+                $str = str_replace('extends Authenticatable', "extends \TCG\Voyager\Models\User", $str);
+
+                file_put_contents(app_path('User.php'), $str);
+            }
+</code></pre>
+
+改为
+
+<pre><code>
+        if (file_exists(app_path('Models/User.php'))) {
+            $str = file_get_contents(app_path('Models/User.php'));
+
+            if ($str !== false) {
+                $str = str_replace('extends Authenticatable', "extends \TCG\Voyager\Models\User", $str);
+
+                file_put_contents(app_path('Models/User.php'), $str);
+            }
+</code></pre>
+            
+* app\User.php
+
+<pre><code>namespace App;</code></pre>
+
+改为
+
+<pre><code>namespace App\Models;</code></pre>
+
+
+* config\auth.php
+
+<pre><code>'model' => App\User::class,</code></pre>
+
+改为
+
+<pre><code>'model' => App\Models\User::class,</code></pre>
+
+最后执行加载，并重新迁移数据
+
+<pre><code>
+composer dump-autoload
+php artisan migrate:refresh
+php artisan db:seed
+</code></pre>
 
 

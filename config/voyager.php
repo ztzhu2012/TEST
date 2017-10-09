@@ -13,7 +13,7 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        'namespace'                    => App\User::class,
+        'namespace'                    => App\Models\User::class,
         'default_avatar'               => 'users/default.png',
     ],
 
@@ -42,7 +42,7 @@ return [
     */
 
     'models' => [
-        //'namespace' => 'App\\',
+        'namespace' => 'App\\Models',
     ],
 
     /*
@@ -105,7 +105,7 @@ return [
     |
     */
 
-    'prefix' => 'admin',
+    'prefix' => 'manager',
 
     /*
     |--------------------------------------------------------------------------
@@ -121,18 +121,19 @@ return [
         /*
          * Set whether or not the multilingual is supported by the BREAD input.
          */
-        'enabled' => false,
+        'enabled' => true,
 
         /*
          * Select default language
          */
-        'default' => 'en',
+        'default' => 'zh_CN',
 
         /*
          * Select languages that are supported.
          */
         'locales' => [
             'en',
+            'zh_CN',
             //'pt',
         ],
     ],
