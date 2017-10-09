@@ -15,6 +15,7 @@ return [
         'default_role'                 => 'user',
         'namespace'                    => App\Models\User::class,
         'default_avatar'               => 'users/default.png',
+        'default_path'                 => app_path('Models/User.php'),
     ],
 
     /*
@@ -105,7 +106,7 @@ return [
     |
     */
 
-    'prefix' => 'manager',
+    'prefix' => 'admin',
 
     /*
     |--------------------------------------------------------------------------

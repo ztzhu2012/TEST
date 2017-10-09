@@ -70,6 +70,7 @@ DB_PASSWORD=root
 * vendor\tcg\voyager\src\Commands\InstallCommand.php
 
 <pre><code>
+        $this->info('Attempting to set Voyager User model as parent to App\User');
         if (file_exists(app_path('User.php'))) {
             $str = file_get_contents(app_path('User.php'));
 
@@ -83,14 +84,29 @@ DB_PASSWORD=root
 改为
 
 <pre><code>
-        if (file_exists(app_path('Models/User.php'))) {
-            $str = file_get_contents(app_path('Models/User.php'));
+        $userPath = array_get(config('voyager.user'), 'default_path', app_path('User.php'));
+        $this->info('Attempting to set Voyager User model as parent to ' . $userPath);
+        if (file_exists($userPath)) {
+            $str = file_get_contents($userPath);
 
             if ($str !== false) {
                 $str = str_replace('extends Authenticatable', "extends \TCG\Voyager\Models\User", $str);
 
-                file_put_contents(app_path('Models/User.php'), $str);
+                file_put_contents($userPath, $str);
             }
+</code></pre>
+
+并在config\voyager.php中user数组中增<code>'default_path'                 => app_path('Models/User.php'),</code>
+
+<pre><code>
+    'user' => [
+        'add_default_role_on_register' => true,
+        'default_role'                 => 'user',
+        'namespace'                    => App\Models\User::class,
+        'default_avatar'               => 'users/default.png',
+        
+        'default_path'                 => app_path('Models/User.php'),  // Add
+    ],
 </code></pre>
             
 * app\User.php
@@ -114,8 +130,7 @@ DB_PASSWORD=root
 
 <pre><code>
 composer dump-autoload
-php artisan migrate:refresh
-php artisan db:seed
+php artisan voyager:install --with-dummy
 </code></pre>
 
 
