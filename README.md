@@ -60,6 +60,8 @@ DB_PASSWORD=root
 
 ##### (5) 其它修改
 
+> 注：以下修改内容为非可选内容，只有当你更改了默认的User模型时才需要调整。本项目将使用默认的App\User.php。
+
 在.gitignore中增加以下内容
 
 <pre><code>/public/vendor</code></pre>
@@ -84,9 +86,8 @@ DB_PASSWORD=root
 改为
 
 <pre><code>
-        $userPath = array_get(config('voyager.user'), 'default_path', app_path('User.php'));
-        $this->info('Attempting to set Voyager User model as parent to ' . $userPath);
-        if (file_exists($userPath)) {
+        $userPath = config('voyager.user.default_path', app_path('User.php'));
+        $this->info('Attempting to set Voyager User model as parent to ' . $userPath);        if (file_exists($userPath)) {
             $str = file_get_contents($userPath);
 
             if ($str !== false) {
@@ -102,9 +103,8 @@ DB_PASSWORD=root
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        'namespace'                    => App\Models\User::class,
-        'default_avatar'               => 'users/default.png',
-        
+        'namespace'                    => App\Models\User::class,       //Change
+        'default_avatar'               => 'users/default.png',       
         'default_path'                 => app_path('Models/User.php'),  // Add
     ],
 </code></pre>

@@ -13,9 +13,9 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        'namespace'                    => App\Models\User::class,
+        'namespace'                    => App\User::class,
         'default_avatar'               => 'users/default.png',
-        'default_path'                 => app_path('Models/User.php'),
+        'default_path'                 => app_path('/User.php')
     ],
 
     /*
@@ -43,7 +43,7 @@ return [
     */
 
     'models' => [
-        'namespace' => 'App\\Models',
+        'namespace' => 'App\\Models\\',
     ],
 
     /*
